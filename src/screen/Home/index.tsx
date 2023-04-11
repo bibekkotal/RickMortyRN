@@ -1,10 +1,13 @@
 import React from 'react'
-import { SafeAreaView, useColorScheme, Text, View, FlatList, ActivityIndicator, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { SafeAreaView, useColorScheme, Text, View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Modal from "react-native-modal";
 import FastImage from 'react-native-fast-image'
 import { useInfiniteQuery } from 'react-query';
+import { FlashList } from "@shopify/flash-list";
 import LinearGradient from 'react-native-linear-gradient';
-import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
+import * as Animatable from 'react-native-animatable';
+import { fonts } from '../../assets/fonts';
 import dayjs from 'dayjs';
 const BASE_URL = 'https://rickandmortyapi.com/api/character';
 const DARK = '#2C4C3B';
@@ -89,8 +92,8 @@ const Home = () => {
   const _renderItem = ({ item }) => {
 
     return (
-      <>
-        <TouchableOpacity View key={item.id}
+
+      <TouchableOpacity View key={item.id} 
           onPress={() => {
             toggleModal();
             setClickedItem({ ...item });
@@ -110,16 +113,15 @@ const Home = () => {
           />
 
           <View style={{ width: '60%', display: 'flex', alignItems: 'flex-start', marginLeft: '2%', justifyContent: 'space-evenly' }}>
-            <Text style={{ color: isDarkMode ? DARK : LIGHT, }}>Name : {item.name}</Text>
-            <Text style={{ color: isDarkMode ? DARK : LIGHT, }}>Species : {item.species}</Text>
+          <Text style={{ color: isDarkMode ? DARK : LIGHT, fontFamily: fonts.SpecialEliteRegular }}>Name : {item.name}</Text>
+          <Text style={{ color: isDarkMode ? DARK : LIGHT, fontFamily: fonts.SpecialEliteRegular }}>Species : {item.species}</Text>
             {item.type !== '' &&
-              <Text style={{ color: isDarkMode ? DARK : LIGHT, }}>Type : {item.type}</Text>}
-            <Text style={{ color: isDarkMode ? DARK : LIGHT, }}>Gender: {item.gender}</Text>
-            <Text style={{ color: isDarkMode ? DARK : LIGHT, }}>Location: {item.location.name}</Text>
-            <Text style={{ color: isDarkMode ? DARK : LIGHT, }}>Origin: {item.origin.name}</Text>
+            <Text style={{ color: isDarkMode ? DARK : LIGHT, fontFamily: fonts.SpecialEliteRegular }}>Type : {item.type}</Text>}
+          <Text style={{ color: isDarkMode ? DARK : LIGHT, fontFamily: fonts.SpecialEliteRegular }}>Gender: {item.gender}</Text>
+          <Text style={{ color: isDarkMode ? DARK : LIGHT, fontFamily: fonts.SpecialEliteRegular }}>Location: {item.location.name}</Text>
+          <Text style={{ color: isDarkMode ? DARK : LIGHT, fontFamily: fonts.SpecialEliteRegular }}>Origin: {item.origin.name}</Text>
           </View>
-        </TouchableOpacity>
-      </>
+      </TouchableOpacity>
     )
 
   }
@@ -133,7 +135,7 @@ const Home = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
 
-      <Text style={{ color: isDarkMode ? LIGHT : DARK, fontSize: 20, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 5 }}>Rick and Morty</Text>
+      <Animatable.Text animation="pulse" iterationCount="infinite" style={{ color: isDarkMode ? LIGHT : DARK, fontSize: 20, lineHeight: 30, textAlign: 'center', letterSpacing: 5, fontFamily: fonts.rickMorty }}>Rick and Morty</Animatable.Text>
 
       {isLoading ?
         <View style={[backgroundStyle, { ...styles.shimmerContainer }]}>
@@ -165,7 +167,7 @@ const Home = () => {
         </View>
         :
         <>
-          <FlatList
+          <FlashList
             vertical
             numColumns={1}
             renderItem={_renderItem}
@@ -177,6 +179,8 @@ const Home = () => {
             data={data?.pages?.map(page => page?.results).flat()}
             contentContainerStyle={{ paddingHorizontal: 10, paddingTop: 10 }}
             ListFooterComponent={!isFetchingNextPage ? renderSpinner : null}
+            getItemType={({ item }) => { return item; }}
+            estimatedItemSize={200}
           />
 
           <Modal
@@ -203,27 +207,26 @@ const Home = () => {
                 flex: 0.6
               }}>
 
-                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15 }}>Name : {clickedItem.name}</Text>
-                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15 }}>Species : {clickedItem?.species}</Text>
+                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15, fontFamily: fonts.SpecialEliteRegular }}>Name : {clickedItem.name}</Text>
+                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15, fontFamily: fonts.SpecialEliteRegular }}>Species : {clickedItem?.species}</Text>
 
                 {clickedItem.type !== '' &&
-                  <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15 }}>Type : {clickedItem?.type}</Text>
+                  <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15, fontFamily: fonts.SpecialEliteRegular }}>Type : {clickedItem?.type}</Text>
                 }
 
-                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15 }}>Gender: {clickedItem?.gender}</Text>
+                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15, fontFamily: fonts.SpecialEliteRegular }}>Gender: {clickedItem?.gender}</Text>
 
-                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15 }}>Location: {clickedItem?.location?.name}</Text>
+                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15, fontFamily: fonts.SpecialEliteRegular }}>Location: {clickedItem?.location?.name}</Text>
 
-                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15 }}>Origin: {clickedItem?.origin?.name}</Text>
+                <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize: 15, fontFamily: fonts.SpecialEliteRegular }}>Origin: {clickedItem?.origin?.name}</Text>
 
-                {/* <Text style={{ color: !isDarkMode ? DARK : LIGHT, fontSize:8 }}>Created: {formatDate(item?.created)}</Text> */}
               </View>
 
               <TouchableOpacity onPress={toggleModal} style={{
                 backgroundColor: isDarkMode ? LIGHT : DARK, flex: 0.2,
                 justifyContent: 'center', alignItems: 'center'
               }}>
-                <Text style={{ color: !isDarkMode ? LIGHT : DARK, textTransform: 'uppercase', fontSize: 15, letterSpacing: 3 }}>Close</Text>
+                <Text style={{ color: !isDarkMode ? LIGHT : DARK, textTransform: 'uppercase', fontSize: 15, letterSpacing: 3, fontFamily: fonts.SpecialEliteRegular }}>Close</Text>
               </TouchableOpacity>
 
             </View>

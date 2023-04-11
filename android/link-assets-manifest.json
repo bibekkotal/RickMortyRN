@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/get_schwifty.ttf",
+      "sha1": "eaebaa0cb62e067c417a1c8942b2d346537e3f5f"
+    },
+    {
+      "path": "src/assets/fonts/SpecialElite-Regular.ttf",
+      "sha1": "dba5375769650ccf8308f24b73c5a1563d8a4731"
+    }
+  ]
+}
